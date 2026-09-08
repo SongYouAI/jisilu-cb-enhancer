@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const VERSION = '0.4.8';
+  const VERSION = '0.5.0';
   const { mapColumns } = root.JisiluSelectors;
   const { inactiveReason } = root.JisiluRules;
   const number = value => { const n = Number(String(value ?? '').replace(/[,%，\s]/g, '')); return Number.isFinite(n) ? n : null; };

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""v3 图标：深蓝底 + 琥珀金「潜」字（金币隐喻配债机会）。
-选「潜」而非「¥」或「集」：与功能「潜伏配债」直接相关，跨集思录系列插件辨识度。"""
+"""v4 图标：深蓝底 + 琥珀金圆 + 深蓝「债」字。
+选「债」：插件已从「潜伏配债」扩展为「潜伏配债 + 转债列表估值五列」，
+「债」字覆盖两个功能域（都是可转债），比「潜」更贴切，跨集思录系列插件辨识度。"""
 from PIL import Image, ImageDraw, ImageFont
 import os
 
@@ -43,13 +44,13 @@ def make_icon(size):
         # 金币阴影 + 主体
         draw.ellipse((coin_box[0] + 2*scale, coin_box[1] + 2*scale, coin_box[2] + 2*scale, coin_box[3] + 2*scale), fill=GOLD_DEEP)
         draw.ellipse(coin_box, fill=GOLD)
-        # 「潜」字（笔画多，字号稍小避免溢出）
-        font_size = int(s * 0.50) * scale
+        # 「债」字（笔画适中，字号可略大于原「潜」字）
+        font_size = int(s * 0.54) * scale
         font = get_font(font_size)
-        tw, th, _, oy = text_size(td, '潜', font)
+        tw, th, _, oy = text_size(td, '债', font)
         x = (s*scale - tw) / 2 - 0
         y = (s*scale - th) / 2 - oy
-        draw.text((x, y), '潜', font=font, fill=INK)
+        draw.text((x, y), '债', font=font, fill=INK)
         # 右上角小金条（标识"双列"）
         bar_w = int(s * 0.16) * scale
         bar_h = int(s * 0.07) * scale
@@ -57,16 +58,17 @@ def make_icon(size):
         by = int(s * 0.10) * scale
         draw.rounded_rectangle((bx, by, bx + bar_w, by + bar_h), radius=int(bar_h/2), fill=GOLD)
     else:
-        # 16px：「潜」字笔画太多必糊，只画金色圆 + 中央深蓝小点（象征"在圆里"= 潜伏）
+        # 16px：「债」字笔画在 16px 下必糊，只画金色圆 + 中央深蓝债券票券横条
         pad = int(s * 0.18) * scale
         coin_box = (pad, pad, s*scale - pad, s*scale - pad)
         draw.ellipse((coin_box[0] + 1*scale, coin_box[1] + 1*scale, coin_box[2] + 1*scale, coin_box[3] + 1*scale), fill=GOLD_DEEP)
         draw.ellipse(coin_box, fill=GOLD)
-        # 中央深蓝小三角（暗示"潜入"）
+        # 中央深蓝横条（象征一纸债券）
         cx = s*scale // 2
         cy = s*scale // 2
-        r2 = int(s * 0.10) * scale
-        draw.polygon([(cx, cy + r2), (cx - r2, cy - r2//2), (cx + r2, cy - r2//2)], fill=INK)
+        bw = int(s * 0.22) * scale
+        bh = int(s * 0.06) * scale
+        draw.rounded_rectangle((cx - bw, cy - bh, cx + bw, cy + bh), radius=int(bh / 2), fill=INK)
     return img.resize((s, s), Image.LANCZOS)
 
 for size in (16, 48, 128):

@@ -1,16 +1,29 @@
 {
   "manifest_version": 3,
-  "name": "集思录潜伏配债增强（个人自用）",
-  "version": "0.4.8",
-  "description": "仅使用公开行情和当前页面可见数据，计算潜伏配债资金与安全垫。",
+  "name": "集思录转债增强（潜伏配债 + 估值五列）",
+  "version": "0.5.0",
+  "description": "仅使用公开行情和当前页面可见数据：待发转债页算潜伏配债资金与安全垫；转债列表页算纯债价值/期权价值/理论价值/正股波动率/回售收益。",
   "icons": { "16": "icons/icon-16.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
   "action": { "default_icon": { "16": "icons/icon-16.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" } },
   "permissions": ["storage"],
-  "host_permissions": ["https://www.jisilu.cn/*", "https://push2.eastmoney.com/*", "https://qt.gtimg.cn/*"],
+  "host_permissions": [
+    "https://www.jisilu.cn/*",
+    "https://push2.eastmoney.com/*",
+    "https://datacenter-web.eastmoney.com/*",
+    "https://qt.gtimg.cn/*",
+    "https://web.ifzq.gtimg.cn/*"
+  ],
   "background": { "service_worker": "background/service-worker.js" },
-  "content_scripts": [{
-    "matches": ["https://www.jisilu.cn/web/data/cb/pre/", "https://www.jisilu.cn/web/data/cb/pre/*", "https://www.jisilu.cn/web/data/cb/pre"],
-    "js": ["core/rounding.js", "core/calc.js", "core/color.js", "core/dates.js", "core/rules.js", "core/predict.js", "config/selectors.js", "storage/repository.js", "content/ui/styles.js", "content/ui/tooltip.js", "content/ui/panel.js", "content/jisilu-pre.js"],
-    "run_at": "document_idle"
-  }]
+  "content_scripts": [
+    {
+      "matches": ["https://www.jisilu.cn/web/data/cb/pre/", "https://www.jisilu.cn/web/data/cb/pre/*", "https://www.jisilu.cn/web/data/cb/pre"],
+      "js": ["core/rounding.js", "core/calc.js", "core/color.js", "core/dates.js", "core/rules.js", "core/predict.js", "config/selectors.js", "storage/repository.js", "content/ui/styles.js", "content/ui/tooltip.js", "content/ui/panel.js", "content/jisilu-pre.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.jisilu.cn/web/data/cb/list", "https://www.jisilu.cn/web/data/cb/list/", "https://www.jisilu.cn/web/data/cb/list*"],
+      "js": ["core/bsm.js", "core/bond-math.js", "content/ui/styles.js", "content/jisilu-cb-list.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }
