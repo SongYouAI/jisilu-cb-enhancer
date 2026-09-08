@@ -109,7 +109,7 @@
 
 - **MV3 架构**：`manifest_version: 3`，`content_scripts` 注入页面，`service_worker` 负责批量行情请求与缓存。
 - **隔离世界**：content script 运行在 isolated world，与页面 JS 互不干扰。
-- **DOM 注入**：向 element-ui 双表格结构注入列时，必须在表头/表体两个 `colgroup` 同步插入 `<col>`，并把新列追加到整行末尾；同时注意 element-ui 表头末尾存在一个 0 宽 gutter 列，注入的 col 必须插到 gutter 之前，否则会被压成 0 宽。
+- **DOM 注入**：集思录两个页面用不同表格框架——待发转债页是 element-ui（`el-table__*`），转债列表页是集思录自研表格（`jsl-table-*`），选择器两套都兼容。向任一双表格结构注入列时，必须在表头/表体两个 `colgroup` 同步插入 `<col>`，并把新列追加到整行末尾；同时注意表头 `colgroup` 末尾存在一个 0 宽 `gutter` 列（滚动条占位），注入的 col 必须插到 gutter 之前，否则会被压成 0 宽。
 - **自愈机制**：由于第三方框架可能部分清理注入节点，本扩展把关键不变量（注入 th 数、col 数、两表等宽）编码成周期性检查，异常时自动重建。
 - **Context 防护**：MV3 dev-reload 后旧 content script 的异步回调仍可能触发，扩展加了 `contextAlive()`、`safeSendMessage()`、`stopSelfHeal()` 防止抛出 `Extension context invalidated`。
 
